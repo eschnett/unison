@@ -1,0 +1,365 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><link rel="stylesheet" type="text/css" href="style.css" /><script type="text/javascript" src="highlight.js"></script></head><body><pre><span class="hs-keyword">module</span><span> </span><span class="hs-identifier">Unison.Merge.DiffOp</span><span>
+</span><span id="line-2"></span><span>  </span><span class="hs-special">(</span><span> </span><span class="annot"><a href="Unison.Merge.DiffOp.html#DiffOp"><span class="hs-identifier">DiffOp</span></a></span><span> </span><span class="hs-special">(</span><span class="hs-glyph">..</span><span class="hs-special">)</span><span class="hs-special">,</span><span>
+</span><span id="line-3"></span><span>    </span><span class="annot"><a href="Unison.Merge.DiffOp.html#DiffOp2"><span class="hs-identifier">DiffOp2</span></a></span><span> </span><span class="hs-special">(</span><span class="hs-glyph">..</span><span class="hs-special">)</span><span class="hs-special">,</span><span>
+</span><span id="line-4"></span><span>  </span><span class="hs-special">)</span><span>
+</span><span id="line-5"></span><span class="hs-keyword">where</span><span>
+</span><span id="line-6"></span><span>
+</span><span id="line-7"></span><span class="hs-keyword">import</span><span> </span><span class="annot"><a href="Unison.Merge.Updated.html"><span class="hs-identifier">Unison.Merge.Updated</span></a></span><span> </span><span class="hs-special">(</span><span class="annot"><a href="Unison.Merge.Updated.html#Updated"><span class="hs-identifier">Updated</span></a></span><span class="hs-special">)</span><span>
+</span><span id="line-8"></span><span>
+</span><span id="line-9"></span><span class="hs-comment">-- | A diff operation is one of:</span><span>
+</span><span id="line-10"></span><span class="hs-comment">--</span><span>
+</span><span id="line-11"></span><span class="hs-comment">--   * An add (where nothing was)</span><span>
+</span><span id="line-12"></span><span class="hs-comment">--   * A delete (of the thing that was)</span><span>
+</span><span id="line-13"></span><span class="hs-comment">--   * An update (from old to new)</span><span>
+</span><span id="line-14"></span><span class="hs-keyword">data</span><span> </span><span id="DiffOp"><span class="annot"><a href="Unison.Merge.DiffOp.html#DiffOp"><span class="hs-identifier hs-var">DiffOp</span></a></span></span><span> </span><span id="local-6989586621679195582"><span class="annot"><a href="#local-6989586621679195582"><span class="hs-identifier hs-type">a</span></a></span></span><span>
+</span><span id="line-15"></span><span>  </span><span class="hs-glyph">=</span><span> </span><span id="DiffOp%27Add"><span class="annot"><a href="Unison.Merge.DiffOp.html#DiffOp%27Add"><span class="hs-identifier hs-var">DiffOp'Add</span></a></span></span><span> </span><span class="hs-glyph">!</span><span class="annot"><a href="#local-6989586621679195582"><span class="hs-identifier hs-type">a</span></a></span><span>
+</span><span id="line-16"></span><span>  </span><span class="hs-glyph">|</span><span> </span><span id="DiffOp%27Delete"><span class="annot"><a href="Unison.Merge.DiffOp.html#DiffOp%27Delete"><span class="hs-identifier hs-var">DiffOp'Delete</span></a></span></span><span> </span><span class="hs-glyph">!</span><span class="annot"><a href="#local-6989586621679195582"><span class="hs-identifier hs-type">a</span></a></span><span>
+</span><span id="line-17"></span><span>  </span><span class="hs-glyph">|</span><span> </span><span id="DiffOp%27Update"><span class="annot"><a href="Unison.Merge.DiffOp.html#DiffOp%27Update"><span class="hs-identifier hs-var">DiffOp'Update</span></a></span></span><span> </span><span class="hs-glyph">!</span><span class="hs-special">(</span><span class="annot"><a href="Unison.Merge.Updated.html#Updated"><span class="hs-identifier hs-type">Updated</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679195582"><span class="hs-identifier hs-type">a</span></a></span><span class="hs-special">)</span><span>
+</span><span id="line-18"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="annot"><span class="hs-keyword">stock</span></span><span> </span><span class="hs-special">(</span><span id="local-6989586621679195587"><span id="local-6989586621679195593"><span id="local-6989586621679195599"><span id="local-6989586621679195604"><span id="local-6989586621679195607"><span id="local-6989586621679195610"><span id="local-6989586621679195613"><span id="local-6989586621679195616"><span id="local-6989586621679195619"><span id="local-6989586621679195622"><span id="local-6989586621679195625"><span id="local-6989586621679195628"><span id="local-6989586621679195631"><span id="local-6989586621679195636"><span id="local-6989586621679195641"><span id="local-6989586621679195646"><span id="local-6989586621679195651"><span class="annot"><span class="annottext">(forall m. Monoid m =&gt; DiffOp m -&gt; m)
+-&gt; (forall m a. Monoid m =&gt; (a -&gt; m) -&gt; DiffOp a -&gt; m)
+-&gt; (forall m a. Monoid m =&gt; (a -&gt; m) -&gt; DiffOp a -&gt; m)
+-&gt; (forall a b. (a -&gt; b -&gt; b) -&gt; b -&gt; DiffOp a -&gt; b)
+-&gt; (forall a b. (a -&gt; b -&gt; b) -&gt; b -&gt; DiffOp a -&gt; b)
+-&gt; (forall b a. (b -&gt; a -&gt; b) -&gt; b -&gt; DiffOp a -&gt; b)
+-&gt; (forall b a. (b -&gt; a -&gt; b) -&gt; b -&gt; DiffOp a -&gt; b)
+-&gt; (forall a. (a -&gt; a -&gt; a) -&gt; DiffOp a -&gt; a)
+-&gt; (forall a. (a -&gt; a -&gt; a) -&gt; DiffOp a -&gt; a)
+-&gt; (forall a. DiffOp a -&gt; [a])
+-&gt; (forall a. DiffOp a -&gt; Bool)
+-&gt; (forall a. DiffOp a -&gt; Int)
+-&gt; (forall a. Eq a =&gt; a -&gt; DiffOp a -&gt; Bool)
+-&gt; (forall a. Ord a =&gt; DiffOp a -&gt; a)
+-&gt; (forall a. Ord a =&gt; DiffOp a -&gt; a)
+-&gt; (forall a. Num a =&gt; DiffOp a -&gt; a)
+-&gt; (forall a. Num a =&gt; DiffOp a -&gt; a)
+-&gt; Foldable DiffOp
+forall a. Eq a =&gt; a -&gt; DiffOp a -&gt; Bool
+forall a. Num a =&gt; DiffOp a -&gt; a
+forall a. Ord a =&gt; DiffOp a -&gt; a
+forall m. Monoid m =&gt; DiffOp m -&gt; m
+forall a. DiffOp a -&gt; Bool
+forall a. DiffOp a -&gt; Int
+forall a. DiffOp a -&gt; [a]
+forall a. (a -&gt; a -&gt; a) -&gt; DiffOp a -&gt; a
+forall m a. Monoid m =&gt; (a -&gt; m) -&gt; DiffOp a -&gt; m
+forall b a. (b -&gt; a -&gt; b) -&gt; b -&gt; DiffOp a -&gt; b
+forall a b. (a -&gt; b -&gt; b) -&gt; b -&gt; DiffOp a -&gt; b
+forall (t :: * -&gt; *).
+(forall m. Monoid m =&gt; t m -&gt; m)
+-&gt; (forall m a. Monoid m =&gt; (a -&gt; m) -&gt; t a -&gt; m)
+-&gt; (forall m a. Monoid m =&gt; (a -&gt; m) -&gt; t a -&gt; m)
+-&gt; (forall a b. (a -&gt; b -&gt; b) -&gt; b -&gt; t a -&gt; b)
+-&gt; (forall a b. (a -&gt; b -&gt; b) -&gt; b -&gt; t a -&gt; b)
+-&gt; (forall b a. (b -&gt; a -&gt; b) -&gt; b -&gt; t a -&gt; b)
+-&gt; (forall b a. (b -&gt; a -&gt; b) -&gt; b -&gt; t a -&gt; b)
+-&gt; (forall a. (a -&gt; a -&gt; a) -&gt; t a -&gt; a)
+-&gt; (forall a. (a -&gt; a -&gt; a) -&gt; t a -&gt; a)
+-&gt; (forall a. t a -&gt; [a])
+-&gt; (forall a. t a -&gt; Bool)
+-&gt; (forall a. t a -&gt; Int)
+-&gt; (forall a. Eq a =&gt; a -&gt; t a -&gt; Bool)
+-&gt; (forall a. Ord a =&gt; t a -&gt; a)
+-&gt; (forall a. Ord a =&gt; t a -&gt; a)
+-&gt; (forall a. Num a =&gt; t a -&gt; a)
+-&gt; (forall a. Num a =&gt; t a -&gt; a)
+-&gt; Foldable t
+$cfold :: forall m. Monoid m =&gt; DiffOp m -&gt; m
+fold :: forall m. Monoid m =&gt; DiffOp m -&gt; m
+$cfoldMap :: forall m a. Monoid m =&gt; (a -&gt; m) -&gt; DiffOp a -&gt; m
+foldMap :: forall m a. Monoid m =&gt; (a -&gt; m) -&gt; DiffOp a -&gt; m
+$cfoldMap' :: forall m a. Monoid m =&gt; (a -&gt; m) -&gt; DiffOp a -&gt; m
+foldMap' :: forall m a. Monoid m =&gt; (a -&gt; m) -&gt; DiffOp a -&gt; m
+$cfoldr :: forall a b. (a -&gt; b -&gt; b) -&gt; b -&gt; DiffOp a -&gt; b
+foldr :: forall a b. (a -&gt; b -&gt; b) -&gt; b -&gt; DiffOp a -&gt; b
+$cfoldr' :: forall a b. (a -&gt; b -&gt; b) -&gt; b -&gt; DiffOp a -&gt; b
+foldr' :: forall a b. (a -&gt; b -&gt; b) -&gt; b -&gt; DiffOp a -&gt; b
+$cfoldl :: forall b a. (b -&gt; a -&gt; b) -&gt; b -&gt; DiffOp a -&gt; b
+foldl :: forall b a. (b -&gt; a -&gt; b) -&gt; b -&gt; DiffOp a -&gt; b
+$cfoldl' :: forall b a. (b -&gt; a -&gt; b) -&gt; b -&gt; DiffOp a -&gt; b
+foldl' :: forall b a. (b -&gt; a -&gt; b) -&gt; b -&gt; DiffOp a -&gt; b
+$cfoldr1 :: forall a. (a -&gt; a -&gt; a) -&gt; DiffOp a -&gt; a
+foldr1 :: forall a. (a -&gt; a -&gt; a) -&gt; DiffOp a -&gt; a
+$cfoldl1 :: forall a. (a -&gt; a -&gt; a) -&gt; DiffOp a -&gt; a
+foldl1 :: forall a. (a -&gt; a -&gt; a) -&gt; DiffOp a -&gt; a
+$ctoList :: forall a. DiffOp a -&gt; [a]
+toList :: forall a. DiffOp a -&gt; [a]
+$cnull :: forall a. DiffOp a -&gt; Bool
+null :: forall a. DiffOp a -&gt; Bool
+$clength :: forall a. DiffOp a -&gt; Int
+length :: forall a. DiffOp a -&gt; Int
+$celem :: forall a. Eq a =&gt; a -&gt; DiffOp a -&gt; Bool
+elem :: forall a. Eq a =&gt; a -&gt; DiffOp a -&gt; Bool
+$cmaximum :: forall a. Ord a =&gt; DiffOp a -&gt; a
+maximum :: forall a. Ord a =&gt; DiffOp a -&gt; a
+$cminimum :: forall a. Ord a =&gt; DiffOp a -&gt; a
+minimum :: forall a. Ord a =&gt; DiffOp a -&gt; a
+$csum :: forall a. Num a =&gt; DiffOp a -&gt; a
+sum :: forall a. Num a =&gt; DiffOp a -&gt; a
+$cproduct :: forall a. Num a =&gt; DiffOp a -&gt; a
+product :: forall a. Num a =&gt; DiffOp a -&gt; a
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Foldable</span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679195657"><span id="local-6989586621679195661"><span class="annot"><span class="annottext">(forall a b. (a -&gt; b) -&gt; DiffOp a -&gt; DiffOp b)
+-&gt; (forall a b. a -&gt; DiffOp b -&gt; DiffOp a) -&gt; Functor DiffOp
+forall a b. a -&gt; DiffOp b -&gt; DiffOp a
+forall a b. (a -&gt; b) -&gt; DiffOp a -&gt; DiffOp b
+forall (f :: * -&gt; *).
+(forall a b. (a -&gt; b) -&gt; f a -&gt; f b)
+-&gt; (forall a b. a -&gt; f b -&gt; f a) -&gt; Functor f
+$cfmap :: forall a b. (a -&gt; b) -&gt; DiffOp a -&gt; DiffOp b
+fmap :: forall a b. (a -&gt; b) -&gt; DiffOp a -&gt; DiffOp b
+$c&lt;$ :: forall a b. a -&gt; DiffOp b -&gt; DiffOp a
+&lt;$ :: forall a b. a -&gt; DiffOp b -&gt; DiffOp a
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Functor</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679195667"><span id="local-6989586621679195677"><span id="local-6989586621679195681"><span class="annot"><span class="annottext">Int -&gt; DiffOp a -&gt; ShowS
+[DiffOp a] -&gt; ShowS
+DiffOp a -&gt; String
+(Int -&gt; DiffOp a -&gt; ShowS)
+-&gt; (DiffOp a -&gt; String) -&gt; ([DiffOp a] -&gt; ShowS) -&gt; Show (DiffOp a)
+forall a. Show a =&gt; Int -&gt; DiffOp a -&gt; ShowS
+forall a. Show a =&gt; [DiffOp a] -&gt; ShowS
+forall a. Show a =&gt; DiffOp a -&gt; String
+forall a.
+(Int -&gt; a -&gt; ShowS) -&gt; (a -&gt; String) -&gt; ([a] -&gt; ShowS) -&gt; Show a
+$cshowsPrec :: forall a. Show a =&gt; Int -&gt; DiffOp a -&gt; ShowS
+showsPrec :: Int -&gt; DiffOp a -&gt; ShowS
+$cshow :: forall a. Show a =&gt; DiffOp a -&gt; String
+show :: DiffOp a -&gt; String
+$cshowList :: forall a. Show a =&gt; [DiffOp a] -&gt; ShowS
+showList :: [DiffOp a] -&gt; ShowS
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Show</span></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679195689"><span id="local-6989586621679195699"><span id="local-6989586621679195705"><span id="local-6989586621679195710"><span class="annot"><span class="annottext">Functor DiffOp
+Foldable DiffOp
+(Functor DiffOp, Foldable DiffOp) =&gt;
+(forall (f :: * -&gt; *) a b.
+ Applicative f =&gt;
+ (a -&gt; f b) -&gt; DiffOp a -&gt; f (DiffOp b))
+-&gt; (forall (f :: * -&gt; *) a.
+    Applicative f =&gt;
+    DiffOp (f a) -&gt; f (DiffOp a))
+-&gt; (forall (m :: * -&gt; *) a b.
+    Monad m =&gt;
+    (a -&gt; m b) -&gt; DiffOp a -&gt; m (DiffOp b))
+-&gt; (forall (m :: * -&gt; *) a.
+    Monad m =&gt;
+    DiffOp (m a) -&gt; m (DiffOp a))
+-&gt; Traversable DiffOp
+forall (t :: * -&gt; *).
+(Functor t, Foldable t) =&gt;
+(forall (f :: * -&gt; *) a b.
+ Applicative f =&gt;
+ (a -&gt; f b) -&gt; t a -&gt; f (t b))
+-&gt; (forall (f :: * -&gt; *) a. Applicative f =&gt; t (f a) -&gt; f (t a))
+-&gt; (forall (m :: * -&gt; *) a b.
+    Monad m =&gt;
+    (a -&gt; m b) -&gt; t a -&gt; m (t b))
+-&gt; (forall (m :: * -&gt; *) a. Monad m =&gt; t (m a) -&gt; m (t a))
+-&gt; Traversable t
+forall (m :: * -&gt; *) a. Monad m =&gt; DiffOp (m a) -&gt; m (DiffOp a)
+forall (f :: * -&gt; *) a.
+Applicative f =&gt;
+DiffOp (f a) -&gt; f (DiffOp a)
+forall (m :: * -&gt; *) a b.
+Monad m =&gt;
+(a -&gt; m b) -&gt; DiffOp a -&gt; m (DiffOp b)
+forall (f :: * -&gt; *) a b.
+Applicative f =&gt;
+(a -&gt; f b) -&gt; DiffOp a -&gt; f (DiffOp b)
+$ctraverse :: forall (f :: * -&gt; *) a b.
+Applicative f =&gt;
+(a -&gt; f b) -&gt; DiffOp a -&gt; f (DiffOp b)
+traverse :: forall (f :: * -&gt; *) a b.
+Applicative f =&gt;
+(a -&gt; f b) -&gt; DiffOp a -&gt; f (DiffOp b)
+$csequenceA :: forall (f :: * -&gt; *) a.
+Applicative f =&gt;
+DiffOp (f a) -&gt; f (DiffOp a)
+sequenceA :: forall (f :: * -&gt; *) a.
+Applicative f =&gt;
+DiffOp (f a) -&gt; f (DiffOp a)
+$cmapM :: forall (m :: * -&gt; *) a b.
+Monad m =&gt;
+(a -&gt; m b) -&gt; DiffOp a -&gt; m (DiffOp b)
+mapM :: forall (m :: * -&gt; *) a b.
+Monad m =&gt;
+(a -&gt; m b) -&gt; DiffOp a -&gt; m (DiffOp b)
+$csequence :: forall (m :: * -&gt; *) a. Monad m =&gt; DiffOp (m a) -&gt; m (DiffOp a)
+sequence :: forall (m :: * -&gt; *) a. Monad m =&gt; DiffOp (m a) -&gt; m (DiffOp a)
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Traversable</span></span></span></span></span></span><span class="hs-special">)</span><span>
+</span><span id="line-19"></span><span>
+</span><span id="line-20"></span><span class="hs-comment">-- | Like 'DiffOp', but updates are tagged as propagated (True) or not (False).</span><span>
+</span><span id="line-21"></span><span class="hs-comment">--</span><span>
+</span><span id="line-22"></span><span class="hs-comment">-- This could be cleaned up a bit, but eh, it works for now. Historical context: the concept of a propagated upddate was</span><span>
+</span><span id="line-23"></span><span class="hs-comment">-- not in the initial version of merge (which was only concerned with the merge algorithm and producing the correct</span><span>
+</span><span id="line-24"></span><span class="hs-comment">-- output). However, it is now being incorporated, because when e.g. viewing a diff, we do want to see propagated, not</span><span>
+</span><span id="line-25"></span><span class="hs-comment">-- drop them.</span><span>
+</span><span id="line-26"></span><span class="hs-keyword">data</span><span> </span><span id="DiffOp2"><span class="annot"><a href="Unison.Merge.DiffOp.html#DiffOp2"><span class="hs-identifier hs-var">DiffOp2</span></a></span></span><span> </span><span id="local-6989586621679195716"><span class="annot"><a href="#local-6989586621679195716"><span class="hs-identifier hs-type">a</span></a></span></span><span>
+</span><span id="line-27"></span><span>  </span><span class="hs-glyph">=</span><span> </span><span id="DiffOp2%27Add"><span class="annot"><a href="Unison.Merge.DiffOp.html#DiffOp2%27Add"><span class="hs-identifier hs-var">DiffOp2'Add</span></a></span></span><span> </span><span class="hs-glyph">!</span><span class="annot"><a href="#local-6989586621679195716"><span class="hs-identifier hs-type">a</span></a></span><span>
+</span><span id="line-28"></span><span>  </span><span class="hs-glyph">|</span><span> </span><span id="DiffOp2%27Delete"><span class="annot"><a href="Unison.Merge.DiffOp.html#DiffOp2%27Delete"><span class="hs-identifier hs-var">DiffOp2'Delete</span></a></span></span><span> </span><span class="hs-glyph">!</span><span class="annot"><a href="#local-6989586621679195716"><span class="hs-identifier hs-type">a</span></a></span><span>
+</span><span id="line-29"></span><span>  </span><span class="hs-glyph">|</span><span> </span><span id="DiffOp2%27Update"><span class="annot"><a href="Unison.Merge.DiffOp.html#DiffOp2%27Update"><span class="hs-identifier hs-var">DiffOp2'Update</span></a></span></span><span> </span><span class="hs-glyph">!</span><span class="hs-special">(</span><span class="annot"><a href="Unison.Merge.Updated.html#Updated"><span class="hs-identifier hs-type">Updated</span></a></span><span> </span><span class="annot"><a href="#local-6989586621679195716"><span class="hs-identifier hs-type">a</span></a></span><span class="hs-special">)</span><span> </span><span class="hs-glyph">!</span><span class="annot"><span class="hs-identifier hs-type">Bool</span></span><span> </span><span class="hs-comment">{- is propagated? -}</span><span>
+</span><span id="line-30"></span><span>  </span><span class="hs-keyword">deriving</span><span> </span><span class="annot"><span class="hs-keyword">stock</span></span><span> </span><span class="hs-special">(</span><span id="local-6989586621679195721"><span id="local-6989586621679195727"><span id="local-6989586621679195732"><span id="local-6989586621679195737"><span id="local-6989586621679195740"><span id="local-6989586621679195743"><span id="local-6989586621679195746"><span id="local-6989586621679195749"><span id="local-6989586621679195752"><span id="local-6989586621679195755"><span id="local-6989586621679195758"><span id="local-6989586621679195761"><span id="local-6989586621679195764"><span id="local-6989586621679195769"><span id="local-6989586621679195774"><span id="local-6989586621679195779"><span id="local-6989586621679195784"><span class="annot"><span class="annottext">(forall m. Monoid m =&gt; DiffOp2 m -&gt; m)
+-&gt; (forall m a. Monoid m =&gt; (a -&gt; m) -&gt; DiffOp2 a -&gt; m)
+-&gt; (forall m a. Monoid m =&gt; (a -&gt; m) -&gt; DiffOp2 a -&gt; m)
+-&gt; (forall a b. (a -&gt; b -&gt; b) -&gt; b -&gt; DiffOp2 a -&gt; b)
+-&gt; (forall a b. (a -&gt; b -&gt; b) -&gt; b -&gt; DiffOp2 a -&gt; b)
+-&gt; (forall b a. (b -&gt; a -&gt; b) -&gt; b -&gt; DiffOp2 a -&gt; b)
+-&gt; (forall b a. (b -&gt; a -&gt; b) -&gt; b -&gt; DiffOp2 a -&gt; b)
+-&gt; (forall a. (a -&gt; a -&gt; a) -&gt; DiffOp2 a -&gt; a)
+-&gt; (forall a. (a -&gt; a -&gt; a) -&gt; DiffOp2 a -&gt; a)
+-&gt; (forall a. DiffOp2 a -&gt; [a])
+-&gt; (forall a. DiffOp2 a -&gt; Bool)
+-&gt; (forall a. DiffOp2 a -&gt; Int)
+-&gt; (forall a. Eq a =&gt; a -&gt; DiffOp2 a -&gt; Bool)
+-&gt; (forall a. Ord a =&gt; DiffOp2 a -&gt; a)
+-&gt; (forall a. Ord a =&gt; DiffOp2 a -&gt; a)
+-&gt; (forall a. Num a =&gt; DiffOp2 a -&gt; a)
+-&gt; (forall a. Num a =&gt; DiffOp2 a -&gt; a)
+-&gt; Foldable DiffOp2
+forall a. Eq a =&gt; a -&gt; DiffOp2 a -&gt; Bool
+forall a. Num a =&gt; DiffOp2 a -&gt; a
+forall a. Ord a =&gt; DiffOp2 a -&gt; a
+forall m. Monoid m =&gt; DiffOp2 m -&gt; m
+forall a. DiffOp2 a -&gt; Bool
+forall a. DiffOp2 a -&gt; Int
+forall a. DiffOp2 a -&gt; [a]
+forall a. (a -&gt; a -&gt; a) -&gt; DiffOp2 a -&gt; a
+forall m a. Monoid m =&gt; (a -&gt; m) -&gt; DiffOp2 a -&gt; m
+forall b a. (b -&gt; a -&gt; b) -&gt; b -&gt; DiffOp2 a -&gt; b
+forall a b. (a -&gt; b -&gt; b) -&gt; b -&gt; DiffOp2 a -&gt; b
+forall (t :: * -&gt; *).
+(forall m. Monoid m =&gt; t m -&gt; m)
+-&gt; (forall m a. Monoid m =&gt; (a -&gt; m) -&gt; t a -&gt; m)
+-&gt; (forall m a. Monoid m =&gt; (a -&gt; m) -&gt; t a -&gt; m)
+-&gt; (forall a b. (a -&gt; b -&gt; b) -&gt; b -&gt; t a -&gt; b)
+-&gt; (forall a b. (a -&gt; b -&gt; b) -&gt; b -&gt; t a -&gt; b)
+-&gt; (forall b a. (b -&gt; a -&gt; b) -&gt; b -&gt; t a -&gt; b)
+-&gt; (forall b a. (b -&gt; a -&gt; b) -&gt; b -&gt; t a -&gt; b)
+-&gt; (forall a. (a -&gt; a -&gt; a) -&gt; t a -&gt; a)
+-&gt; (forall a. (a -&gt; a -&gt; a) -&gt; t a -&gt; a)
+-&gt; (forall a. t a -&gt; [a])
+-&gt; (forall a. t a -&gt; Bool)
+-&gt; (forall a. t a -&gt; Int)
+-&gt; (forall a. Eq a =&gt; a -&gt; t a -&gt; Bool)
+-&gt; (forall a. Ord a =&gt; t a -&gt; a)
+-&gt; (forall a. Ord a =&gt; t a -&gt; a)
+-&gt; (forall a. Num a =&gt; t a -&gt; a)
+-&gt; (forall a. Num a =&gt; t a -&gt; a)
+-&gt; Foldable t
+$cfold :: forall m. Monoid m =&gt; DiffOp2 m -&gt; m
+fold :: forall m. Monoid m =&gt; DiffOp2 m -&gt; m
+$cfoldMap :: forall m a. Monoid m =&gt; (a -&gt; m) -&gt; DiffOp2 a -&gt; m
+foldMap :: forall m a. Monoid m =&gt; (a -&gt; m) -&gt; DiffOp2 a -&gt; m
+$cfoldMap' :: forall m a. Monoid m =&gt; (a -&gt; m) -&gt; DiffOp2 a -&gt; m
+foldMap' :: forall m a. Monoid m =&gt; (a -&gt; m) -&gt; DiffOp2 a -&gt; m
+$cfoldr :: forall a b. (a -&gt; b -&gt; b) -&gt; b -&gt; DiffOp2 a -&gt; b
+foldr :: forall a b. (a -&gt; b -&gt; b) -&gt; b -&gt; DiffOp2 a -&gt; b
+$cfoldr' :: forall a b. (a -&gt; b -&gt; b) -&gt; b -&gt; DiffOp2 a -&gt; b
+foldr' :: forall a b. (a -&gt; b -&gt; b) -&gt; b -&gt; DiffOp2 a -&gt; b
+$cfoldl :: forall b a. (b -&gt; a -&gt; b) -&gt; b -&gt; DiffOp2 a -&gt; b
+foldl :: forall b a. (b -&gt; a -&gt; b) -&gt; b -&gt; DiffOp2 a -&gt; b
+$cfoldl' :: forall b a. (b -&gt; a -&gt; b) -&gt; b -&gt; DiffOp2 a -&gt; b
+foldl' :: forall b a. (b -&gt; a -&gt; b) -&gt; b -&gt; DiffOp2 a -&gt; b
+$cfoldr1 :: forall a. (a -&gt; a -&gt; a) -&gt; DiffOp2 a -&gt; a
+foldr1 :: forall a. (a -&gt; a -&gt; a) -&gt; DiffOp2 a -&gt; a
+$cfoldl1 :: forall a. (a -&gt; a -&gt; a) -&gt; DiffOp2 a -&gt; a
+foldl1 :: forall a. (a -&gt; a -&gt; a) -&gt; DiffOp2 a -&gt; a
+$ctoList :: forall a. DiffOp2 a -&gt; [a]
+toList :: forall a. DiffOp2 a -&gt; [a]
+$cnull :: forall a. DiffOp2 a -&gt; Bool
+null :: forall a. DiffOp2 a -&gt; Bool
+$clength :: forall a. DiffOp2 a -&gt; Int
+length :: forall a. DiffOp2 a -&gt; Int
+$celem :: forall a. Eq a =&gt; a -&gt; DiffOp2 a -&gt; Bool
+elem :: forall a. Eq a =&gt; a -&gt; DiffOp2 a -&gt; Bool
+$cmaximum :: forall a. Ord a =&gt; DiffOp2 a -&gt; a
+maximum :: forall a. Ord a =&gt; DiffOp2 a -&gt; a
+$cminimum :: forall a. Ord a =&gt; DiffOp2 a -&gt; a
+minimum :: forall a. Ord a =&gt; DiffOp2 a -&gt; a
+$csum :: forall a. Num a =&gt; DiffOp2 a -&gt; a
+sum :: forall a. Num a =&gt; DiffOp2 a -&gt; a
+$cproduct :: forall a. Num a =&gt; DiffOp2 a -&gt; a
+product :: forall a. Num a =&gt; DiffOp2 a -&gt; a
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Foldable</span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679195789"><span id="local-6989586621679195792"><span class="annot"><span class="annottext">(forall a b. (a -&gt; b) -&gt; DiffOp2 a -&gt; DiffOp2 b)
+-&gt; (forall a b. a -&gt; DiffOp2 b -&gt; DiffOp2 a) -&gt; Functor DiffOp2
+forall a b. a -&gt; DiffOp2 b -&gt; DiffOp2 a
+forall a b. (a -&gt; b) -&gt; DiffOp2 a -&gt; DiffOp2 b
+forall (f :: * -&gt; *).
+(forall a b. (a -&gt; b) -&gt; f a -&gt; f b)
+-&gt; (forall a b. a -&gt; f b -&gt; f a) -&gt; Functor f
+$cfmap :: forall a b. (a -&gt; b) -&gt; DiffOp2 a -&gt; DiffOp2 b
+fmap :: forall a b. (a -&gt; b) -&gt; DiffOp2 a -&gt; DiffOp2 b
+$c&lt;$ :: forall a b. a -&gt; DiffOp2 b -&gt; DiffOp2 a
+&lt;$ :: forall a b. a -&gt; DiffOp2 b -&gt; DiffOp2 a
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var">Functor</span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679195797"><span id="local-6989586621679195807"><span id="local-6989586621679195811"><span class="annot"><span class="annottext">Int -&gt; DiffOp2 a -&gt; ShowS
+[DiffOp2 a] -&gt; ShowS
+DiffOp2 a -&gt; String
+(Int -&gt; DiffOp2 a -&gt; ShowS)
+-&gt; (DiffOp2 a -&gt; String)
+-&gt; ([DiffOp2 a] -&gt; ShowS)
+-&gt; Show (DiffOp2 a)
+forall a. Show a =&gt; Int -&gt; DiffOp2 a -&gt; ShowS
+forall a. Show a =&gt; [DiffOp2 a] -&gt; ShowS
+forall a. Show a =&gt; DiffOp2 a -&gt; String
+forall a.
+(Int -&gt; a -&gt; ShowS) -&gt; (a -&gt; String) -&gt; ([a] -&gt; ShowS) -&gt; Show a
+$cshowsPrec :: forall a. Show a =&gt; Int -&gt; DiffOp2 a -&gt; ShowS
+showsPrec :: Int -&gt; DiffOp2 a -&gt; ShowS
+$cshow :: forall a. Show a =&gt; DiffOp2 a -&gt; String
+show :: DiffOp2 a -&gt; String
+$cshowList :: forall a. Show a =&gt; [DiffOp2 a] -&gt; ShowS
+showList :: [DiffOp2 a] -&gt; ShowS
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Show</span></span></span></span></span><span class="hs-special">,</span><span> </span><span id="local-6989586621679195818"><span id="local-6989586621679195827"><span id="local-6989586621679195833"><span id="local-6989586621679195838"><span class="annot"><span class="annottext">Functor DiffOp2
+Foldable DiffOp2
+(Functor DiffOp2, Foldable DiffOp2) =&gt;
+(forall (f :: * -&gt; *) a b.
+ Applicative f =&gt;
+ (a -&gt; f b) -&gt; DiffOp2 a -&gt; f (DiffOp2 b))
+-&gt; (forall (f :: * -&gt; *) a.
+    Applicative f =&gt;
+    DiffOp2 (f a) -&gt; f (DiffOp2 a))
+-&gt; (forall (m :: * -&gt; *) a b.
+    Monad m =&gt;
+    (a -&gt; m b) -&gt; DiffOp2 a -&gt; m (DiffOp2 b))
+-&gt; (forall (m :: * -&gt; *) a.
+    Monad m =&gt;
+    DiffOp2 (m a) -&gt; m (DiffOp2 a))
+-&gt; Traversable DiffOp2
+forall (t :: * -&gt; *).
+(Functor t, Foldable t) =&gt;
+(forall (f :: * -&gt; *) a b.
+ Applicative f =&gt;
+ (a -&gt; f b) -&gt; t a -&gt; f (t b))
+-&gt; (forall (f :: * -&gt; *) a. Applicative f =&gt; t (f a) -&gt; f (t a))
+-&gt; (forall (m :: * -&gt; *) a b.
+    Monad m =&gt;
+    (a -&gt; m b) -&gt; t a -&gt; m (t b))
+-&gt; (forall (m :: * -&gt; *) a. Monad m =&gt; t (m a) -&gt; m (t a))
+-&gt; Traversable t
+forall (m :: * -&gt; *) a. Monad m =&gt; DiffOp2 (m a) -&gt; m (DiffOp2 a)
+forall (f :: * -&gt; *) a.
+Applicative f =&gt;
+DiffOp2 (f a) -&gt; f (DiffOp2 a)
+forall (m :: * -&gt; *) a b.
+Monad m =&gt;
+(a -&gt; m b) -&gt; DiffOp2 a -&gt; m (DiffOp2 b)
+forall (f :: * -&gt; *) a b.
+Applicative f =&gt;
+(a -&gt; f b) -&gt; DiffOp2 a -&gt; f (DiffOp2 b)
+$ctraverse :: forall (f :: * -&gt; *) a b.
+Applicative f =&gt;
+(a -&gt; f b) -&gt; DiffOp2 a -&gt; f (DiffOp2 b)
+traverse :: forall (f :: * -&gt; *) a b.
+Applicative f =&gt;
+(a -&gt; f b) -&gt; DiffOp2 a -&gt; f (DiffOp2 b)
+$csequenceA :: forall (f :: * -&gt; *) a.
+Applicative f =&gt;
+DiffOp2 (f a) -&gt; f (DiffOp2 a)
+sequenceA :: forall (f :: * -&gt; *) a.
+Applicative f =&gt;
+DiffOp2 (f a) -&gt; f (DiffOp2 a)
+$cmapM :: forall (m :: * -&gt; *) a b.
+Monad m =&gt;
+(a -&gt; m b) -&gt; DiffOp2 a -&gt; m (DiffOp2 b)
+mapM :: forall (m :: * -&gt; *) a b.
+Monad m =&gt;
+(a -&gt; m b) -&gt; DiffOp2 a -&gt; m (DiffOp2 b)
+$csequence :: forall (m :: * -&gt; *) a. Monad m =&gt; DiffOp2 (m a) -&gt; m (DiffOp2 a)
+sequence :: forall (m :: * -&gt; *) a. Monad m =&gt; DiffOp2 (m a) -&gt; m (DiffOp2 a)
+</span><span class="hs-identifier hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var hs-var">Traversable</span></span></span></span></span></span><span class="hs-special">)</span><span>
+</span><span id="line-31"></span></pre></body></html>
